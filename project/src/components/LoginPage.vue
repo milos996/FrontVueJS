@@ -18,7 +18,7 @@
     </div>
 </template>
 <script>
-import axios from 'axios'
+import axios from "axios"
 
     export default{
         data () {
@@ -29,7 +29,7 @@ import axios from 'axios'
             }
         },
         methods: {
-            login: function () {
+            login () {
                 axios.post("http://myapp.test/api/auth/login", {
                     email: this.email,
                     password: this.password
@@ -37,7 +37,7 @@ import axios from 'axios'
                 .then( function (response) {
                     this.errorMsg = null;
                     this.user = true;
-                    this.router.push("/home");
+                    this.router.push("/tasks");
                 })
                 .catch( function (error) {
                     this.errorMessage = "Invalid email or password!";

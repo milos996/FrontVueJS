@@ -1,6 +1,6 @@
 <template>
     <div class="registerDivMargins container">
-        <h3>Register</h3>
+        <h2>Register</h2>
         <h4 v-if="errorMessage !== null"> {{ errorMessage }} </h4>
         <div class="row">
             <div class="col-lg-6">
@@ -28,7 +28,7 @@
     </div>
 </template>
 <script>
-import axios from 'axios'
+import axios from "axios"
 
 export default{
     data () {
@@ -41,7 +41,7 @@ export default{
         }
     },
     methods: {
-        register: function() {
+        register () {
 
             if (this.password !== this.confirmPassword) {
                 alert("Passwords don't match");
@@ -53,7 +53,7 @@ export default{
                 name : this.name
             })
             .then( function (response) {
-                this.router.push("/home");
+                this.router.push("/tasks");
             })
             .catch( function (error) {
                 this.messageError = "User with that email already exists";
