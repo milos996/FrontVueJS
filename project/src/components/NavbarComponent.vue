@@ -1,5 +1,5 @@
 <template>
-    <div id="navbar">
+    <div class="navbarMargin">
         <nav class="navbar navbar-expand-lg navbar-light bg-light mr-3 ml-3">
             <a class="navbar-brand" href="#">Todo List Management</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,7 +33,7 @@
     }
 </script>
 <style>
-    #navbar {
+    .navbarMargin {
         margin-top: 50px;
     }
 </style>
