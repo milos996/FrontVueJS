@@ -1,5 +1,10 @@
 <template>
-    <h1>Register</h1>
+    <div id="register" class="container">
+        <div class="row">
+            <div class="col-lg-4">
+            </div>
+        </div>
+    </div>
 </template>
 <script>
 export default{
