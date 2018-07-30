@@ -4,9 +4,10 @@ import { router } from './router.js'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import JQuery from 'jquery'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 
-Vue.use(JQuery)
+Vue.use(VueAxios, axios)
 Vue.use(BootstrapVue);
 Vue.config.productionTip = false
 
