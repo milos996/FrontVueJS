@@ -9,7 +9,7 @@
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
                         <div v-if="user">
-                            <a class="nav-link"><router-link to="/logout"><span class="logText">Log out</span></router-link></a>
+                            <a class="nav-link" v-on:click="logout()"><span class="logText">Log out</span></a>
                         </div>
                         <div v-else>
                             <a class="nav-link"><router-link to="/login"><span class="logText">Log in</span></router-link></a>
@@ -24,10 +24,29 @@
     </div>
 </template>
 <script>
+import { userService } from "../service/User"
     export default{
         data () {
             return {
                 user : false
+            }
+        },
+        created () {
+            this.isUserLogged();
+        },
+        methods: {
+            isUserLogged () {
+                this.user = userService.isUserLogged();
+            },
+            logout () {
+                this.user = false;
+                userService.logout()
+                    .then( response => {
+                        this.$router.push({ name: "login" });
+                    })
+                    .catch( error => {
+
+                    })
             }
         }
     }

@@ -3,6 +3,7 @@
         <div class="row justify-content-lg-center">
             <div class="col-lg-4">
                 <h2 class="text-center"> Log in </h2>
+                <h4 class="text-center" v-if="errorMessage !== null"> {{ errorMessage }} </h4>
                 <form>
                     <div class="form-group">
                         <input v-model="email" type="email" class="form-control"  aria-describedby="emailHelp" placeholder="Enter email">
@@ -12,13 +13,12 @@
                     </div>
                     <button v-on:click="login()" class="btn btn-primary">Log in</button>
                 </form>
-                <h4 v-if="errorMessage !== null"> {{ errorMessage }} </h4>
             </div>
         </div>
     </div>
 </template>
 <script>
-import axios from "axios"
+import { userService } from "../service/User"
 
     export default{
         data () {
@@ -30,18 +30,13 @@ import axios from "axios"
         },
         methods: {
             login () {
-                axios.post("http://myapp.test/api/auth/login", {
-                    email: this.email,
-                    password: this.password
-                })
-                .then( function (response) {
-                    this.errorMsg = null;
-                    this.user = true;
-                    this.router.push("/tasks");
-                })
-                .catch( function (error) {
-                    this.errorMessage = "Invalid email or password!";
-                });
+                userService.login(this.email, this.password)
+                    .then( response => {
+                        this.$router.push({ name: "tasks" });
+                     })
+                    .catch( error => {
+                        this.errorMessage = "Invalid email or password!";
+                    })
             }
         }
     }

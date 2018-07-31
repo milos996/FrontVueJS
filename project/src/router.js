@@ -7,9 +7,9 @@ import TaskListPage from "./components/TaskListPage"
 Vue.use(VueRouter);
 
 const routes = [
-    { path: "/login", component: LoginPage },
-    { path: "/register", component: RegisterPage},
-    { path: "/tasks", component: TaskListPage}
+    { path: "/login", name: "login", component: LoginPage },
+    { path: "/register", name:"register", component: RegisterPage},
+    { path: "/tasks", name:"tasks", component: TaskListPage}
 ]
 
  export const router = new VueRouter({

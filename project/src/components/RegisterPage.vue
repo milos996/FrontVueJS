@@ -47,15 +47,19 @@ export default{
                 alert("Passwords don't match");
                 return;
             }
+
+            
             axios.post("http://myapp.test/api/auth/register", {
                 email : this.email,
                 password: this.password,
                 name : this.name
             })
-            .then( function (response) {
-                this.router.push("/tasks");
+            .then ( response => {
+                console.log(response);
+                this.$router.push({name: 'tasks'});
             })
-            .catch( function (error) {
+            .catch ( error => {
+                console.log(error);
                 this.messageError = "User with that email already exists";
             });
         }
