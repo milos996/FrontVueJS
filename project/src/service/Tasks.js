@@ -2,7 +2,8 @@ import axios from "axios"
 
 export default class Tasks {
     constructor () {
-        axios.defaults.baseURL("http://myapp.test/");
+        axios.defaults.baseURL = "http://localhost:8000/" ;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("token")}`;
     }
     addNewTask (title, note, is_priority, is_done) {
         return axios.post("api/todos", {
@@ -10,6 +11,8 @@ export default class Tasks {
             note,
             is_priority,
             is_done
+        }, {
+            headers: { Authorization: "Bearer " + localStorage.getItem("token")}
         });
     }
     getAllTasks () {

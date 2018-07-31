@@ -3,10 +3,12 @@ import axios from "axios"
 export default class User {
     
     constructor () {
-        axios.defaults.baseURL = "http://myapp.test/";
+        axios.defaults.baseURL = "http://localhost:8000/";
+       // axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("token")}`;
     }
 
     login (email, password) {
+        
         return axios.post("api/auth/login", {
                     email,
                     password

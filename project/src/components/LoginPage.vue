@@ -32,7 +32,10 @@ import { userService } from "../service/User"
             login () {
                 userService.login(this.email, this.password)
                     .then( response => {
+                        console.log("OVdjeeee")
                         this.$router.push({ name: "tasks" });
+                        localStorage.setItem("token", response.data.access_token);
+                        axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("token")}`;
                      })
                     .catch( error => {
                         this.errorMessage = "Invalid email or password!";
