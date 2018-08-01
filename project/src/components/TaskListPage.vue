@@ -6,12 +6,11 @@
                 <div class="list-group" v-for="task in tasks" :key="task.id">
                     <a v-on:click="setCurrentTask(task)"  class="list-group-item list-group-item-action">
                        {{ task.title }}
-                       <font-awesome-icon v-if="task.is_done" icon="check"/>
                     </a>
                 </div>
             </div>
             <div class="col-lg-4">
-                <h3>Add, edit, delete tasks</h3>
+                <h3>Add, edit, delete task</h3>
                 <form>
                     <input v-model="title" type="text" class="form-control"  placeholder="Enter title">
                     <textarea v-model="note" class="form-control"  rows="5" placeholder="Enter notes"></textarea>
@@ -23,65 +22,81 @@
                         <input v-model="isDone" type="checkbox" class="form-check-input">
                         <label class="form-check-label">Is done</label>
                     </div>
-                    <button v-if="currentTaskId === null" v-on:click="addNewTask()" class="btn btn-primary">Add new task</button>
-                    <button v-if="currentTaskId !== null" v-on:click="updateCurrentTask()" class="btn btn-primary">Save task</button>
-                    <button v-if="currentTaskId !== null" v-on:click="deleteTask()" class="btn btn-primary">Delete task</button>
-                    <button v-if="currentTaskId !== null" v-on:click="clearFields()" class="btn btn-warning">Clear current task</button>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <button v-if="currentTaskId === null" v-on:click="addNewTask()" class="btn btn-primary">Add new task</button>
+                        <button v-if="currentTaskId !== null" v-on:click="updateCurrentTask()" class="btn btn-success">Save task</button>
+                        <button v-if="currentTaskId !== null" v-on:click="deleteTask()" class="btn btn-danger">Delete task</button>
+                        <button v-if="currentTaskId !== null" v-on:click="clearFields()" class="btn btn-warning">Clear current task</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </template>
 <script>
-import axios from "axios"
 import { taskService } from "../service/Tasks"
+import { userService } from "../service/User"
 
 export default {
     data () {
         return {
             user: null,
-            tasks: null,
+            tasks: [],
             title: null,
             note: null,
-            isPriority: null,
-            isDone: null,
+            isPriority: false,
+            isDone: false,
             currentTaskId: null,
             errorMessage: null
         }
     },
     created () {
         this.getTasks();
+        this.getUserId();
     },
     methods: {
         getTasks () {
             taskService.getAllTasks()
-                .then ( response => {
-                    console.log(response);
+                .then( response => {
                     this.tasks = response.data;
                 })
-                .catch ( error => {
+                .catch( error => {
                     this.errorMessage = error;
-                    console.log(error);
                 });
+        },
+        getUserId () {
+            userService.isUserLogged()
+                .then( response => {
+                    this.user = response.data.id;
+                })
         },
         addNewTask () {
             taskService.addNewTask(this.title, this.note, this.isPriority, this.isDone)
-                .then ( response => {
-                    alert("Successfuly created task!")
-                    console.log("Uspjesno unjet novi task");
-                })
-                .catch ( error => {
-                    this.errorMessage = error;
-                    console.log("Error: " + error);
+                .then( response => {
+                    this.tasks.push({
+                        id: response.data,
+                        title: this.title,
+                        note: this.note,
+                        is_priority: this.isPriority,
+                        is_done: this.isDone,
+                        user_id: this.user
+                    });
+                    this.clearFields();
                 });
         },
         updateCurrentTask () {
             taskService.updateTask(this.title, this.note, this.isPriority, this.isDone, this.currentTaskId)
-                .then ( response => {
-
-                })
-                .catch ( error => {
-
+                .then( response => {
+                    this.tasks.map ( currentTask => {
+                        if (currentTask.id === this.currentTaskId) {
+                            currentTask.title = this.title;
+                            currentTask.note = this.note;
+                            currentTask.is_priority = this.isPriority;
+                            currentTask.is_done = this.isDone;
+                        }
+                        return currentTask;
+                    });
+                    this.clearFields();
                 });
         },
         setCurrentTask (task) {
@@ -93,15 +108,17 @@ export default {
         },
         deleteTask () {
             taskService.deleteTask(this.currentTaskId)
-                .then ( response => {
-
-                })
-                .catch ( error => {
-
+                .then( response => {
+                    this.tasks.filter( currentTask => currentTask.id !== this.currentTaskId);
+                    this.clearFields();   
                 });
         },
         clearFields () {
             this.currentTaskId = null;
+            this.title = null;
+            this.note = null;
+            this.isPriority = false;
+            this.isDone = false;
         }
     }
 }

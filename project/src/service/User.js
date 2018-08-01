@@ -4,15 +4,14 @@ export default class User {
     
     constructor () {
         axios.defaults.baseURL = "http://localhost:8000/";
-       // axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("token")}`;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("token")}`;
     }
 
     login (email, password) {
-        
         return axios.post("api/auth/login", {
-                    email,
-                    password
-                });  
+            email,
+            password
+        });  
     }
     logout () {
         return axios.post("api/auth/logout");
@@ -25,13 +24,7 @@ export default class User {
         });
     }
     isUserLogged () {
-         axios.post("api/auth/me")
-            .then( response => {
-                console.log(response);
-            })
-            .catch( error => {
-
-            });
+        return axios.post("api/auth/me");
     }
 }
 

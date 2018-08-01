@@ -28,7 +28,7 @@
     </div>
 </template>
 <script>
-import axios from "axios"
+import { userService } from "../service/User"
 
 export default{
     data () {
@@ -42,26 +42,17 @@ export default{
     },
     methods: {
         register () {
-
             if (this.password !== this.confirmPassword) {
-                alert("Passwords don't match");
+                this.errorMessage = "Passwords don't match";
                 return;
-            }
-
-            
-            axios.post("http://myapp.test/api/auth/register", {
-                email : this.email,
-                password: this.password,
-                name : this.name
-            })
-            .then ( response => {
-                console.log(response);
-                this.$router.push({name: 'tasks'});
-            })
-            .catch ( error => {
-                console.log(error);
-                this.messageError = "User with that email already exists";
-            });
+            }   
+            userService.register(this.email, this.password, this.name)
+                .then( response => {
+                    this.$router.push({name: 'login'});
+                })
+                .catch( error => {
+                    this.messageError = "User with that email already exists";
+                });
         }
     }
 }

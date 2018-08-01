@@ -9,14 +9,14 @@
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
                         <div v-if="user">
-                            <a class="nav-link" v-on:click="logout()"><span class="logText">Log out</span></a>
+                            <a class="nav-link" v-on:click="logout()">Log out</a>
                         </div>
                         <div v-else>
-                            <a class="nav-link"><router-link to="/login"><span class="logText">Log in</span></router-link></a>
+                            <a class="nav-link"><router-link to="/login">Log in</router-link></a>
                         </div>
                     </li>
                     <li>
-                        <a v-if="!user" class="nav-link"><router-link to="/register"><span class="logText">Sign Up</span></router-link></a>
+                        <a v-if="!user" class="nav-link"><router-link to="/register">Sign Up</router-link></a>
                     </li>
                 </ul>
             </div>
@@ -25,28 +25,37 @@
 </template>
 <script>
 import { userService } from "../service/User"
+import { eventBus } from "../main.js"
+
     export default{
         data () {
             return {
                 user : false
             }
         },
-        created () {
+        beforeMount () {
             this.isUserLogged();
+        },
+        created () {
+            eventBus.$on('user-logged', this.isUserLogged);
         },
         methods: {
             isUserLogged () {
-                this.user = userService.isUserLogged();
+                userService.isUserLogged()
+                    .then( response => {
+                        this.user = true;   
+                    })
+                    .catch( error => {
+                        this.user = false;
+                    });
             },
             logout () {
                 this.user = false;
                 userService.logout()
                     .then( response => {
-                        this.$router.push({ name: "login" });
-                    })
-                    .catch( error => {
-
-                    })
+                        localStorage.removeItem("token");
+                        this.$router.push({ name: "login" }); 
+                    });
             }
         }
     }

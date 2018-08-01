@@ -10,8 +10,8 @@ const routes = [
     { path: "/login", name: "login", component: LoginPage },
     { path: "/register", name:"register", component: RegisterPage},
     { path: "/tasks", name:"tasks", component: TaskListPage}
-]
+];
 
- export const router = new VueRouter({
+export const router = new VueRouter({
     routes
-})
+});
