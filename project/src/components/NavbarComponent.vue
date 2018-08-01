@@ -8,15 +8,15 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <div v-if="user">
-                            <a class="nav-link" v-on:click="logout()">Log out</a>
+                        <div v-if="userIsLogged">
+                            <a class="nav-link" @click="logout">Log out</a>
                         </div>
                         <div v-else>
                             <a class="nav-link"><router-link to="/login">Log in</router-link></a>
                         </div>
                     </li>
                     <li>
-                        <a v-if="!user" class="nav-link"><router-link to="/register">Sign Up</router-link></a>
+                        <a v-if="!userIsLogged" class="nav-link"><router-link to="/register">Sign Up</router-link></a>
                     </li>
                 </ul>
             </div>
@@ -30,7 +30,7 @@ import { eventBus } from "../main.js"
     export default{
         data () {
             return {
-                user : false
+                userIsLogged : false
             }
         },
         beforeMount () {
@@ -43,17 +43,16 @@ import { eventBus } from "../main.js"
             isUserLogged () {
                 userService.isUserLogged()
                     .then( response => {
-                        this.user = true;   
+                        this.userIsLogged = true;   
                     })
                     .catch( error => {
-                        this.user = false;
+                        this.userIsLogged = false;
                     });
             },
             logout () {
-                this.user = false;
+                this.userIsLogged = false;
                 userService.logout()
                     .then( response => {
-                        localStorage.removeItem("token");
                         this.$router.push({ name: "login" }); 
                     });
             }

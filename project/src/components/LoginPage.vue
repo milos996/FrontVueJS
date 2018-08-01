@@ -11,7 +11,7 @@
                     <div class="form-group">
                         <input v-model="password" type="password" class="form-control"  placeholder="Password">
                     </div>
-                    <button v-on:click="login()" class="btn btn-primary"> Log in </button>
+                    <button @click="login" class="btn btn-primary"> Log in </button>
                 </form>
             </div>
         </div>
@@ -20,7 +20,6 @@
 <script>
 import { userService } from "../service/User"
 import { eventBus } from "../main.js"
-import axios from "axios"
 
     export default{
         data () {
@@ -34,8 +33,7 @@ import axios from "axios"
             login () {
                 userService.login(this.email, this.password)
                     .then( response => {
-                        localStorage.setItem("token", response.data.access_token);
-                        axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("token")}`;
+                        userService.setToken(response.data.access_token);
                         eventBus.$emit('user-logged', { text: "user logged" });
                         this.$router.push({ name: "tasks" });
                      })

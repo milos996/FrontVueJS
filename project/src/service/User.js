@@ -14,6 +14,7 @@ export default class User {
         });  
     }
     logout () {
+        localStorage.removeItem("token");
         return axios.post("api/auth/logout");
     }
     register (email, password, name) {
@@ -25,6 +26,10 @@ export default class User {
     }
     isUserLogged () {
         return axios.post("api/auth/me");
+    }
+    setToken (token) {
+        localStorage.setItem("token", token);
+        axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem("token")}`;
     }
 }
 

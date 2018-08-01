@@ -21,7 +21,7 @@
                         <label>Name:</label>
                         <input v-model="name" type="text" class="form-control" placeholder="Enter your name">
                     </div>
-                    <button v-on:click="register()" class="btn btn-primary">Register</button>
+                    <button @click="register" class="btn btn-primary">Register</button>
                 </form>
             </div>
         </div>

@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-lg-8">
                 <div class="list-group" v-for="task in tasks" :key="task.id">
-                    <a v-on:click="setCurrentTask(task)"  class="list-group-item list-group-item-action">
+                    <a @click="setCurrentTask(task)"  class="list-group-item list-group-item-action">
                        {{ task.title }}
                     </a>
                 </div>
@@ -23,10 +23,10 @@
                         <label class="form-check-label">Is done</label>
                     </div>
                     <div class="btn-group" role="group" aria-label="Basic example">
-                        <button v-if="currentTaskId === null" v-on:click="addNewTask()" class="btn btn-primary">Add new task</button>
-                        <button v-if="currentTaskId !== null" v-on:click="updateCurrentTask()" class="btn btn-success">Save task</button>
-                        <button v-if="currentTaskId !== null" v-on:click="deleteTask()" class="btn btn-danger">Delete task</button>
-                        <button v-if="currentTaskId !== null" v-on:click="clearFields()" class="btn btn-warning">Clear current task</button>
+                        <button v-if="currentTaskId === null" @click="addNewTask" class="btn btn-primary">Add new task</button>
+                        <button v-if="currentTaskId !== null" @click="updateCurrentTask" class="btn btn-success">Save task</button>
+                        <button v-if="currentTaskId !== null" @click="deleteTask" class="btn btn-danger">Delete task</button>
+                        <button v-if="currentTaskId !== null" @click="clearFields" class="btn btn-warning">Clear current task</button>
                     </div>
                 </form>
             </div>
